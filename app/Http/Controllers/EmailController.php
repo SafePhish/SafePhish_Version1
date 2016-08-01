@@ -98,10 +98,8 @@ class EmailController extends Controller
         $target = $currentProject->PRJ_TargetType;
         foreach($users as $user) {
             $projects = self::retrieveProjects($user->MGL_Id);
-            if($projects[0]->updated_at <= $date) {
-                $mailingList[] = $user;
-            }
-            else if(!((!is_null($projects[0]) &&
+            if($projects[0]->updated_at <= $date ||
+                !((!is_null($projects[0]) &&
                     $complexity == $projects[0]->PRJ_ComplexityType &&
                     $target == $projects[0]->PRJ_TargetType)
                 ||
