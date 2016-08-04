@@ -24,6 +24,30 @@ class Template
         self::checkTemplateExists($name);
     }
 
+    /**
+     * @return mixed
+     */
+    public static function getName()
+    {
+        return self::$name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getPath()
+    {
+        return self::$path;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getConfigPrefix()
+    {
+        return self::$configPrefix;
+    }
+
     private static function splitToParagraphs($input) {
         return explode('\n',$input);
     }
@@ -32,10 +56,10 @@ class Template
         $path = '../resources/views/emails';
         if(file_exists("$path/phishing/$template.blade.php")) {
             self::$path = "$path/phishing";
-            self::$configPrefix = 'emails.phishing';
+            self::$configPrefix = 'emails.phishing.';
         } else if(file_exists("$path/edu/$template.blade.php")) {
             self::$path = "$path/edu";
-            self::$configPrefix = 'emails.edu';
+            self::$configPrefix = 'emails.edu.';
         } else {
             throw new FileNotFoundException("Failed to find template: $template");
         }
