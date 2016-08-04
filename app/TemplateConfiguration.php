@@ -10,7 +10,6 @@ namespace App;
 
 use League\Flysystem\Exception;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use App\Exceptions\ConfigurationException;
 use OutOfBoundsException;
 
