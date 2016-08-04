@@ -6,7 +6,7 @@
  * Time: 8:50 AM
  */
 
-namespace app;
+namespace App;
 
 use League\Flysystem\Exception;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
@@ -17,7 +17,6 @@ use OutOfBoundsException;
 class TemplateConfiguration
 {
     private $template;
-    private $templatePrefix;
     private $companyName;
     private $projectName;
     private $projectId;
@@ -36,25 +35,6 @@ class TemplateConfiguration
     }
 
     /**
-     * checkFileExist
-     * Checks if the file exists one of the two valid directories. IF it does, sets private variables.
-     *
-     * @param   array           $templateSettings       Template Name, Template Path Prefix, Company Name, Project Name, Project ID
-     * @throws  FileNotFoundException
-     */
-    private function checkFileExist($templateSettings) {
-        $path = '../resources/views/emails';
-        $templateName = $templateSettings['templateName'];
-        if(file_exists("$path/phishing/$templateName.blade.php")) {
-            $this->templatePrefix = 'emails.phishing.';
-        } else if(file_exists("$path/edu/$templateName.blade.php")) {
-            $this->templatePrefix = 'emails.edu.';
-        } else {
-            throw new FileNotFoundException("Failed to find template: $templateName");
-        }
-    }
-
-    /**
      * areSettingsValid
      * Checks to be sure that the settings are valid inputs for their respective objects.
      *
@@ -62,13 +42,11 @@ class TemplateConfiguration
      * @throws  OutOfBoundsException
      */
     private function areSettingsValid($templateSettings) {
-        $message = '';
-        if(var_export($templateSettings) || empty($templateSettings)) {
+        if(!is_array($templateSettings) || empty($templateSettings)) {
             throw new OutOfBoundsException('Expected array, received ' . get_class($templateSettings) . ' Object');
         }
         $this->validateSettingsKeys($templateSettings);
-        //$this->validateSettingsValues($templateSettings);
-        $this->checkFileExist($templateSettings);
+        $this->validateSettingsValues($templateSettings);
         $this->setSettings($templateSettings);
     }
 
@@ -143,7 +121,7 @@ class TemplateConfiguration
      * @param   array           $templateSettings       Template Name, Template Path Prefix, Company Name, Project Name, Project ID
      */
     private function setSettings($templateSettings) {
-        $this->template = $templateSettings['templateName'];
+        $this->template = new Template($templateSettings['templateName']);
         $this->companyName = $templateSettings['companyName'];
         $this->projectName = $templateSettings['projectName'];
         $this->projectId = $templateSettings['projectId'];
