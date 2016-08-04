@@ -37,7 +37,8 @@ class Email {
 
         try {
             foreach($recipients as $recipient) {
-                self::sendEmail($recipient);
+                $data = self::phishingEmailData($recipient);
+                self::sendEmail($data['templateData'],$data['emailData']);
                 self::logSentEmail($recipient);
             }
         } catch(Exception $e) {
@@ -60,13 +61,13 @@ class Email {
     }
 
     /**
-     * sendEmail
-     * Sends them an email to the specified recipient.
+     * phishingEmailData
+     * Gathers the required information to generate a phishing email.
      *
-     * @param   Mailing_List_User       $recipient           User object
-     * @throws  FatalErrorException
+     * @param   Mailing_List_User           $recipient
+     * @return  array
      */
-    private static function sendEmail(Mailing_List_User $recipient) {
+    private static function phishingEmailData(Mailing_List_User $recipient) {
         $templateData = array(
             'companyName'=>self::$templateConfig->getCompanyName(),
             'projectName'=>self::$templateConfig->getProjectName(),
@@ -75,11 +76,33 @@ class Email {
             'username'=>$recipient->MGL_Username,
             'urlId'=>$recipient->MGL_UniqueURLId
         );
-        $subject = self::$emailConfig->getSubject();
-        $from = self::$emailConfig->getFromEmail();
-        $to = $recipient['MGL_Email'];
+        $template = self::$templateConfig->getTemplate();
+        $emailData = array(
+            'subject'=>self::$emailConfig->getSubject(),
+            'from'=>self::$emailConfig->getFromEmail(),
+            'to'=>$recipient->MGL_Email,
+            'template'=>$template->getConfigPrefix() . $template->getName()
+        );
+        return array(
+            'templateData'=>$templateData,
+            'emailData'=>$emailData
+        );
+    }
+
+    /**
+     * sendEmail
+     * Sends them an email to the specified recipient.
+     *
+     * @param   array                   $templateData       Variables required by the template
+     * @param   array                   $emailData          Header information for the email
+     * @throws  FatalErrorException
+     */
+    private static function sendEmail($templateData,$emailData) {
+        $from = $emailData['from'];
+        $to = $emailData['to'];
+        $subject = $emailData['subject'];
         $mailResult = Mail::send(
-            ['html' => 'emails.phishing.' . self::$templateConfig->getTemplate()],
+            ['html' => $emailData['template']],
             $templateData,
             function($m) use ($from, $to, $subject) {
                 $m->from($from);
