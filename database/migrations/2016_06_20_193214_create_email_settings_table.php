@@ -12,7 +12,7 @@ class CreateEmailSettingsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('default_emailsettings', function(Blueprint $table)
+		Schema::create('default_email_settings', function(Blueprint $table)
 		{
 			$table->integer('DFT_UserId');
 			$table->primary('DFT_UserId');
@@ -20,6 +20,7 @@ class CreateEmailSettingsTable extends Migration {
 			$table->text('DFT_MailPort');
 			$table->text('DFT_Username');
 			$table->text('DFT_CompanyName');
+            $table->timestamps();
 		});
 	}
 
@@ -30,7 +31,7 @@ class CreateEmailSettingsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('default_emailsettings');
+		Schema::drop('default_email_settings');
 	}
 
 }
