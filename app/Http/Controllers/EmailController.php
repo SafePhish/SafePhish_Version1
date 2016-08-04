@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\TemplateConfiguration;
 use App\EmailConfiguration;
 use App\Email;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AuthController as Auth;
 
 use App\Models\Project;
 use App\Models\Sent_Mail;
@@ -25,7 +25,7 @@ class EmailController extends Controller
      *
      * @param    Request $request Request object passed via AJAX from client.
      */
-    public function sendEmail(Request $request)
+    public static function sendEmail(Request $request)
     {
         if(Auth::check()) {
             try {
