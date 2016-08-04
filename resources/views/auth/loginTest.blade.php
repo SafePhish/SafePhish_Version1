@@ -20,9 +20,9 @@
             <p class="fa fa-times-circle">{{ $error }}</p>
         @endforeach
     </div>
-    {!! Form::open(array('action'=>'PhishingController@postLogin')) !!}
-    <p>{!! Form::text('usernameText',null,array('id'=>'usernameText','placeholder'=>'Username')) !!}</p>
-    <p>{!! Form::password('passwordText',array('id'=>'passwordText','placeholder'=>'Password')) !!}</p>
+    {!! Form::open(array('url'=>'/login')) !!}
+    <p>{!! Form::text('usernameText',null,array('id'=>'usernameText','placeholder'=>'Username','name'=>'usernameText')) !!}</p>
+    <p>{!! Form::password('passwordText',array('id'=>'passwordText','placeholder'=>'Password','name'=>'passwordText')) !!}</p>
     {!! Form::submit('Submit',array('id'=>'submitButton')) !!}
     {!! Form::close() !!}
 @stop
