@@ -19,11 +19,11 @@
     <div id="templateContentDiv"></div>
 @stop
 @section('bodyContent')
-    {!! Form::open(array('action'=>'PhishingController@createNewTemplate')) !!}
+    {!! Form::open(array('action'=>'GUIController@createNewPhishTemplate')) !!}
     <p>{!! Form::label('fileNameText','Template Name: ') !!}
-        {!! Form::text('fileNameText',null,array('name'=>'fileNameText','placeholder'=>'e.g. advT10, bscG5')) !!}
+        {!! Form::text('fileNameText',null,array('name'=>'templateName','placeholder'=>'e.g. advT10, bscG5')) !!}
         <button id="checkNameButton">Check Availability</button></p>
-    {!! Form::textarea('contentTextArea',null,array('id'=>'contentTextArea','rows'=>'30','cols'=>'60','name'=>'contentTextArea')) !!}<br />
+    {!! Form::textarea('contentTextArea',null,array('id'=>'contentTextArea','rows'=>'30','cols'=>'60','name'=>'templateContent')) !!}<br />
     <button id="firstNameButton">First Name</button>
     <button id="lastNameButton">Last Name</button>
     <button id="usernameButton">Username</button>

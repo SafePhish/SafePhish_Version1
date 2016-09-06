@@ -5,7 +5,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 </head>
 <body>
-<div class="rootContainer">{!! Form::open(array('action'=>'PhishingController@postRegister')) !!}
+<div class="rootContainer">{!! Form::open(array('url'=>'/register')) !!}
     {!! Form::text('firstNameText',null,array('name'=>'firstNameText')) !!}
     {!! Form::text('lastNameText',null,array('name'=>'lastNameText')) !!}
     {!! Form::text('initialText',null,array('name'=>'initialText','maxlength'=>1)) !!}

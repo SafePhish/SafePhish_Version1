@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="/css/jquery-ui.css" />
 @stop
 @section('stylesheets')
-    <link rel="stylesheet" type="text/css" href="/css/resultsstyles.css" />
-    <link rel="stylesheet" type="text/css" href="/css/tablestructurestyles.css" />
+    <link rel="stylesheet" type="text/css" href="/css/resultsStyles.css" />
+    <link rel="stylesheet" type="text/css" href="/css/resultsTableStructure.css" />
 @stop
 @section('resultsClassDefault')
     activeNavButton tempActiveNavButton

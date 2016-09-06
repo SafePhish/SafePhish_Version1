@@ -14,7 +14,7 @@ class GUIController extends Controller
 {
     public static function generateLogin() {
         if(!Auth::check()) {
-            return view("auth.loginTest");
+            return view("auth.login");
         }
         return redirect()->to('/');
     }
@@ -24,6 +24,25 @@ class GUIController extends Controller
             return view("auth.register");
         }
         return redirect()->to('/');
+    }
+
+    private static function authRequired() {
+        \Session::put('intended',$_SERVER['REQUEST_URI']);
+        return redirect()->route('login');
+    }
+
+    public static function displayResults() {
+        if(Auth::check()) {
+            return view("displays.showReports");
+        }
+        return self::authRequired();
+    }
+
+    public static function generateCreateTemplate() {
+        if(Auth::check()) {
+            return view("forms.createNewTemplate");
+        }
+        return self::authRequired();
     }
 
     /**
@@ -41,10 +60,8 @@ class GUIController extends Controller
 
             $variables = array('settings'=>$settings,'projects'=>$projects,'templates'=>$templates);
             return view('forms.phishingEmail')->with($variables);
-        } else {
-            \Session::put('intended',$_SERVER['REQUEST_URI']);
-            return redirect()->route('login');
         }
+        return self::authRequired();
     }
 
     /**
@@ -169,8 +186,12 @@ class GUIController extends Controller
      */
     public static function phishHTMLReturner($id) {
         try {
-            $path = "../resources/views/emails/phishing/$id.blade.php";
-            $contents = \File::get($path);
+            if(Auth::check()) {
+                $path = "../resources/views/emails/phishing/$id.blade.php";
+                $contents = \File::get($path);
+            } else {
+                $contents = "Failed user authentication.";
+            }
         }
         catch (Exception $e) {
             //log exception

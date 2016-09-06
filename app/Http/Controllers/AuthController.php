@@ -46,7 +46,7 @@ class AuthController extends Controller
     public static function logout() {
         \Session::forget('authUser');
         \Session::forget('authIp');
-        \Session::foget('intended');
+        \Session::forget('intended');
         return view('auth.logout'); //create this view
     }
 }

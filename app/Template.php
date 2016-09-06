@@ -49,7 +49,9 @@ class Template
     }
 
     private static function splitToParagraphs($input) {
-        return explode('\n',$input);
+        /*$content = */return explode(PHP_EOL,$input);
+        /*echo 'Content: ';
+        print_r(array_values($content));*/
     }
 
     private static function checkTemplateExists($template) {
@@ -92,7 +94,7 @@ class Template
             array(
                 "options"=>
                     array(
-                        "regexp"=>"/([^<>])/ig"
+                        "regexp"=>"/([^<>])/"
                     )
             )
         );
