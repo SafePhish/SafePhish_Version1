@@ -44,7 +44,7 @@ $('document').ready(function() {
         templateToggle();
     });
     results.click(function() {
-        window.location.href = "http://localhost:8888";
+        window.location.href = "/";
     });
 
     changeInfoView(projects);
