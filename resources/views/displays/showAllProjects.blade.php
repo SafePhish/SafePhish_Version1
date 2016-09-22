@@ -21,8 +21,8 @@
         <label for="projectNameSelect">Email Projects: </label>
         <select id='projectNameSelect' name='projectName' onchange="getProject(this)" size="{{ $projectSize }}">
             @for ($i = 0; $i < $projectSize; $i++)
-                <option class="{{ $data[$i]['PRJ_ProjectStatus'] }}Project" value="{{ $data[$i]['PRJ_ProjectName'] }}">
-                    {{ $data[$i]['PRJ_ProjectName'] }} ({{ $data[$i]['PRJ_ProjectStatus'] }})</option>
+                <option class="{{ $projects[$i]['PRJ_ProjectStatus'] }}Project" value="{{ $projects[$i]['PRJ_ProjectName'] }}">
+                    {{ $projects[$i]['PRJ_ProjectName'] }} ({{ $projects[$i]['PRJ_ProjectStatus'] }})</option>
             @endfor
         </select>
     </p>
