@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Default_Settings extends Model
 {
-    protected $table = 'default_email_settings';
+    protected $table = 'default_emailsettings';
 
     protected $fillable = ['DFT_UserId',
         'DFT_MailServer',
