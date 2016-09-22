@@ -20,3 +20,13 @@ Route::get('/','GUIController@displayResults')->name('authHome');
 
 //Errors
 Route::get('/unauthorized','ErrorController@e401')->name('e401');
+
+//Projects
+
+//Emails
+Route::get('/email/generate','GUIController@generatePhishingEmailForm');
+Route::post('email/send','EmailController@sendEmail')->name('sendEmail');
+
+//MLU
+Route::get('/mailinglist/create/user','GUIController@generateNewMailingListUserForm')->name('mailingListUser');
+Route::post('/mailinglist/create/user','GUIController@createNewMailingListUser')->name('postMailingListUser');
