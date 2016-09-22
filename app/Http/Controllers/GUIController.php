@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\RandomObjectGeneration;
 use App\Models\Default_Settings;
+use App\Models\Mailing_List_User;
+use App\Models\MLU_Departments;
 use App\Models\Project;
 use App\Template;
 use Illuminate\Http\Request;
@@ -57,8 +60,19 @@ class GUIController extends Controller
             $settings = Default_Settings::where('DFT_UserId',$user->USR_Id)->first();
             $projects = Project::all();
             $templates = self::returnAllTemplatesByDirectory('phishing');
-
-            $variables = array('settings'=>$settings,'projects'=>$projects,'templates'=>$templates);
+            if(count($settings)) {
+                $dft_host = $settings->DFT_MailServer;
+                $dft_port = $settings->DFT_MailPort;
+                $dft_user = $settings->DFT_Username;
+                $dft_company = $settings->DFT_CompanyName;
+            } else {
+                $dft_host = '';
+                $dft_port = '';
+                $dft_company = '';
+                $dft_user = '';
+            }
+            $variables = array('dft_host'=>$dft_host,'dft_port'=>$dft_port,'dft_user'=>$dft_user,
+                'dft_company'=>$dft_company,'projects'=>$projects,'templates'=>$templates);
             return view('forms.phishingEmail')->with($variables);
         }
         return self::authRequired();
@@ -105,8 +119,8 @@ class GUIController extends Controller
                 $dft_company = '';
                 $dft_user = '';
             }
-            $varToPass = array('dft_host'=>$dft_host,'dft_port'=>$dft_port,'dft_user'=>$dft_user,'dft_company'=>$dft_company);
-            return view('forms.defaultEmailSettings')->with($varToPass);
+            $variables = array('dft_host'=>$dft_host,'dft_port'=>$dft_port,'dft_user'=>$dft_user,'dft_company'=>$dft_company);
+            return view('forms.defaultEmailSettings')->with($variables);
         } else {
             \Session::put('intended',route('defaultSettings')); //define route defaultSettings
             return redirect()->route('login');
@@ -198,5 +212,36 @@ class GUIController extends Controller
             $contents = "Preview Unavailable";
         }
         return $contents;
+    }
+
+    public static function generateNewMailingListUserForm() {
+        if(Auth::check()) {
+            $departments = MLU_Departments::all();
+            $variables = array('departments'=>$departments);
+            return view('forms.addNewMailingListUser')->with($variables);
+            //return $variables;
+        } else {
+            \Session::put('intended',route('mailingListUser'));
+            return redirect()->route('login');
+        }
+    }
+
+    public static function createNewMailingListUser(Request $request) {
+        if($request->input('departmentSelect') == 0) {
+            $name = $request->input('createNewDepartmentText');
+            $id = MLU_Departments::create(['MLD_Department'=>$name]);
+            $department = MLU_Departments::where('MLD_Id',$id->id)->first();
+        } else {
+            $department = MLU_Departments::where('MLD_Id',$request->input('departmentSelect'))->first();
+        }
+        Mailing_List_User::create(
+            ['MGL_Username'=>$request->input('usernameText'),
+                'MGL_Email'=>$request->input('emailText'),
+                'MGL_FirstName'=>$request->input('firstNameText'),
+                'MGL_LastName'=>$request->input('lastNameText'),
+                'MGL_Department'=>$department->MLD_Id,
+                'MGL_UniqueURLId'=>RandomObjectGeneration::random_str(30)]
+        );
+        return redirect()->route('mailingListUser');
     }
 }
