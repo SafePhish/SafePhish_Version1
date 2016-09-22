@@ -6,10 +6,10 @@
     <meta name="_token" content="{{ csrf_token() }}" />
 @stop
 @section('scripts')
-    <script type="text/javascript" src="/js/emailRequirements.js"></script>
+    <script type="text/javascript" src="/js/phishingEmailBasic.js"></script>
 @stop
 @section('formcss')
-    <link rel="stylesheet" type="text/css" href="/css/baseformstyles.css" />
+    <!--<link rel="stylesheet" type="text/css" href="/css/baseformstyles.css" />-->
 @stop
 @section('emailClassDefault')
     activeNavButton tempActiveNavButton
@@ -18,7 +18,7 @@
     <div id="templateContentDiv"></div>
 @stop
 @section('bodyContent')
-    {!! Form::open(array('action'=>'PhishingController@sendEmail')) !!}
+    {!! Form::open(array('route'=>'sendEmail')) !!}
     <p>{!! Form::label('mailServerText','Mail Server: ') !!}
         <input type="text" id="mailServerText" name="mailServerText" value="{{ $dft_host }}" /></p>
     <p>{!! Form::label('mailPortText','Mail Port: ') !!}
@@ -26,17 +26,17 @@
     <p>{!! Form::label('projectNameSelect','Project Name: ') !!}
         <select id='projectNameSelect' name='projectData' onchange="getProject(this)">
             <option value="-1">--Default--</option>
-            @for ($i = 0; $i < $projectSize; $i++)
-                <option value="{{ array('projectName'=>$data[$i]['PRJ_ProjectName'],'projectId'=>$data[$i]['PRJ_ProjectId'])  }}">
-                    {{ $data[$i]['PRJ_ProjectName'] }} ({{ $data[$i]['PRJ_ProjectStatus'] }})</option>
+            @for ($i = 0; $i < count($projects); $i++)
+                <option value="{{ $projects[$i]->PRJ_Id }}">
+                    {{ $projects[$i]->PRJ_Name }} ({{ $projects[$i]->PRJ_Status }})</option>
             @endfor
             <option value="0">Create New</option>
         </select></p>
     <p>{!! Form::label('emailTemplateSelect','Email Templates: ') !!}
         <select id='emailTemplateSelect' name='emailTemplate' onchange="getTemplateData(this);">
             <option value="-1">--Default--</option>
-            @for ($i = 0; $i < $templateSize; $i++)
-                <option value="{{ $fileNames[$i] }}">{{ $fileNames[$i] }}</option>
+            @for ($i = 0; $i < count($templates); $i++)
+                <option value="{{ $templates[$i] }}">{{ $templates[$i] }}</option>
             @endfor
             <option value="0">Create New</option>
         </select></p>
