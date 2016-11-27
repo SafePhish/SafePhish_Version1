@@ -11,6 +11,7 @@ Route::get('/logout','AuthController@logout')->name('logout');
 //Templates
 Route::get('/templates/create','GUIController@generateCreateTemplate');
 Route::post('/templates/create/phish','GUIController@createNewPhishTemplate');
+Route::get('/templates/display/all','GUIController@generateDisplayTemplatesForm');
 
 //Results
 Route::get('/websitedata/json','DataController@postWebsiteJson');
